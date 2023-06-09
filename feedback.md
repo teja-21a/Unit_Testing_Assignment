@@ -1,0 +1,8 @@
+- No need to add comments for everything. Your code should be self explanatory. You should add comments when the code is difficult to read
+- `CalculatorCode` is not a good name, make it `Calculator` maybe
+- Shouldn't have `console.log` anywhere in the code except `index.js`
+- Code file, and test file should be related. If you are writing tests for `calculator.ts`, your test file should be `calculator.spec.ts`. Don't write tests for other code in `index.spec.ts`
+- Remove commented code
+- Why `Math.floor(Math.random()*(9-0+1)+0);` ?
+- For Jackpot, you didn't add tests for `false` case. Please add it. Use coverage tools to guide you
+- Use `moq.ts` for mocking. Lint, format your code and push again. Thanks!
