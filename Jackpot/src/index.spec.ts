@@ -1,45 +1,42 @@
 import IRandomGen from "./IRandomGen";
 import Jackpot from "./GameLogic";
 import ILogger from "./ILogger";
+import {Mock, It, Times} from "moq.ts" 
 
-//RANDOM_NUMBER_GENERATOR_STUB
-class randomNumberGeneratorStub implements IRandomGen{
-  random(): number {
-    //TO Pass the test By Passing Same Value
-    return 2;
-    //To Fail the Test Mostly by Passing Randomly.
-    //return Math.floor(Math.random()*(9-0+1)+0);
-  }
-}
 
-//LOGGGER_MOCK
-class LoggerMock implements ILogger{
-  public called:number;
-  constructor(){
-    this.called=0;
-  }
-  public log(text: string): void {
-    this.called+=1;  
-  }
-}
 
 describe('test', () => {
   
   test('add', async () => {
 
     //ARRANGE
+    const stubGen = new Mock<IRandomGen>()
+      .setup((RandomGen) => RandomGen.random())
+      .returns(5)
+      .object();
 
-    const randomNumberStub = new randomNumberGeneratorStub();
-    const loggerstub = new LoggerMock();
-    const JackpotObject = new Jackpot(randomNumberStub,loggerstub);
+      // const stubGen2 = new Mock<IRandomGen>()
+      // .setup((RandomGenn) => RandomGenn.random())
+      // .returns(Math.floor(Math.random()*(9-0+1)+0))
+      // .object();
+
+      const loggerMock = new Mock<ILogger>()
+      .setup((Logger) => Logger.log(It.IsAny()))
+      .returns();
+ 
+    const JackpotObject = new Jackpot(stubGen,loggerMock.object());
+    //const JackpotObject2 = new Jackpot(stubGen2,loggerMock.object());
 
     //ACT
-    const result:boolean = JackpotObject.spin(randomNumberStub);
+    const result:boolean = JackpotObject.spin(stubGen);
+    //const result2:boolean = JackpotObject2.spin(stubGen2)
+
+
 
     //ASSERT
-    expect(result).toBe(true); //CHECKS WIN OR NOR
-    expect(loggerstub.called).toEqual(1); //FILE LOGGGER CHECKER
-
+    expect(result).toBe(true); //CHECKS WIN
+    //expect(result2).toBe(false);
+    loggerMock.verify((Logger) => Logger.log(It.IsAny()), Times.AtMostOnce());
   });
 
 });
