@@ -12,6 +12,13 @@ class randomNumberGeneratorStub implements IRandomGen{
   }
 }
 
+class randomNumberGeneratorStub2 implements IRandomGen{
+  random(): number {
+    //To Fail the Test Mostly by Passing Randomly.
+    return Math.floor(Math.random()*(9-0+1)+0);
+  }
+}
+
 //LOGGGER_MOCK
 class LoggerMock implements ILogger{
   public called:number;
@@ -19,9 +26,10 @@ class LoggerMock implements ILogger{
     this.called=0;
   }
   public log(text: string): void {
-    this.called+=1;  
+    this.called=1;  
   }
 }
+
 
 describe('test', () => {
   
@@ -29,17 +37,23 @@ describe('test', () => {
 
     //ARRANGE
 
-    const randomNumberStub = new randomNumberGeneratorStub();
+  const randomNumberStub = new randomNumberGeneratorStub();
+  const randomNumberStub2 = new randomNumberGeneratorStub2();
     const loggerstub = new LoggerMock();
     const JackpotObject = new Jackpot(randomNumberStub,loggerstub);
+    const JackpotObject2 = new Jackpot(randomNumberStub2,loggerstub)
 
     //ACT
     const result:boolean = JackpotObject.spin(randomNumberStub);
+    const result2:boolean = JackpotObject2.spin(randomNumberStub2);
+    // loggerstub.log("");
+
 
     //ASSERT
-    expect(result).toBe(true); //CHECKS WIN OR NOR
-    expect(loggerstub.called).toEqual(1); //FILE LOGGGER CHECKER
-
+    expect(result).toBe(true); //CHECKS WIN
+    expect(result2).toBe(false); //CHECKS LOSE
+    expect(loggerstub.called).toEqual(1); //FILE LOGGGER CHECKERs
+    expect(randomNumberStub.random()).toEqual(2);
   });
 
 });

@@ -5,7 +5,7 @@ export default class Wallet{
 
     private balance:number;
 
-    //INITILIZING WALLET WITH ZERO WHILE OBJECT CREATION
+    //INITILIZING WALLET WITH MONEY WE HAVE WHILE OBJECT CREATION
     constructor (balance:number){
         this.balance=balance;
     }
